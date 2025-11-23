@@ -6,13 +6,14 @@ IDE used: Visual Studio Code | LLM used: ChatGPT*/
 #include <queue>
 using namespace std;
 
-const int SIZE = 7;
+// Final renumbered node count (11 nodes: 0–10)
+const int SIZE = 11;
 
 struct Edge {
     int src, dest, weight;
 };
 
-typedef pair<int, int> Pair;
+typedef pair<int,int> Pair;
 
 class Graph {
 public:
@@ -21,15 +22,12 @@ public:
     Graph(vector<Edge> const &edges) {
         adjList.resize(SIZE);
 
-        for (auto &edge : edges) {
-            adjList[edge.src].push_back(make_pair(edge.dest, edge.weight));
-            adjList[edge.dest].push_back(make_pair(edge.src, edge.weight)); // undirected
+        for (auto &e : edges) {
+            adjList[e.src].push_back(make_pair(e.dest, e.weight));
+            adjList[e.dest].push_back(make_pair(e.src, e.weight)); // undirected
         }
     }
 
-    // ---------------------------
-    // Print adjacency list
-    // ---------------------------
     void printGraph() {
         cout << "Graph's adjacency list:\n";
         for (int i = 0; i < adjList.size(); i++) {
@@ -40,14 +38,11 @@ public:
         }
     }
 
-    // ---------------------------
-    // DFS (reverse adjacency order)
-    // ---------------------------
+    // DFS ---------------------------------------------------
     void DFSUtil(int node, vector<bool> &visited) {
         visited[node] = true;
         cout << node << " ";
 
-        // iterate in *reverse* order to match expected output
         for (int i = adjList[node].size() - 1; i >= 0; i--) {
             int next = adjList[node][i].first;
             if (!visited[next])
@@ -62,9 +57,7 @@ public:
         cout << endl;
     }
 
-    // ---------------------------
-    // BFS (normal adjacency order)
-    // ---------------------------
+    // BFS ---------------------------------------------------
     void BFS(int start) {
         vector<bool> visited(SIZE, false);
         queue<int> q;
@@ -75,8 +68,7 @@ public:
         cout << "BFS starting from vertex " << start << ":\n";
 
         while (!q.empty()) {
-            int node = q.front();
-            q.pop();
+            int node = q.front(); q.pop();
             cout << node << " ";
 
             for (auto &p : adjList[node]) {
@@ -92,10 +84,16 @@ public:
 };
 
 int main() {
+
+    // ----------------------------------------------------
+    // Renumbered graph: nodes 0–10 (11 total)
+    // New edges + new weights
+    // ----------------------------------------------------
     vector<Edge> edges = {
-        {0,1,12},{0,2,8},{0,3,21},
-        {2,3,6},{2,6,2},{5,6,6},
-        {4,5,9},{2,4,4},{2,5,5}
+        {0,1,10}, {0,2,7}, {1,3,14}, {2,3,9},
+        {2,4,11}, {3,5,6}, {4,6,13}, {5,7,8},
+        {6,8,12}, {7,9,5}, {8,10,15},
+        {4,7,4}, {2,9,3}, {1,8,16}
     };
 
     Graph graph(edges);
