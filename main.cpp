@@ -28,7 +28,7 @@ public:
         }
     }
 
-    // ----------------- PRINT GRAPH ----------------
+    // ---------------- PRINT GRAPH ----------------
     void printGraph() {
         cout << "\n=== Network Topology (Adjacency List) ===\n";
         for (int i = 0; i < adjList.size(); i++) {
